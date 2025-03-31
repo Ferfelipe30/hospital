@@ -123,3 +123,36 @@ form input:focus{
   border-color: #A8D5BA; /*Verde Claro*/
   outline: none;
 }
+
+/*Contenedor del login*/
+.login-container{
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #FFFFFF; /*Blanco*/
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center; /*Centrar contenido*/
+}
+
+/*Titulo del login*/
+.login-title{
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #4A4A57; /*Verde Oscuro*/
+}
+
+/*Enlace de "Olvidar contraseña"*/
+.forgot-password{
+  margin-top: 15px;
+}
+
+.forgot-password a{
+  color: #4A4A57;/*Verde Oscuro*/
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.forgot-password a:hover{
+  text-decoration: underline;
+}

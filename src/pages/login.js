@@ -23,8 +23,8 @@ function Login() {
     };
 
     return (
-        <div>
-            <h1>Inicio de Sesión</h1>
+        <div className="login-container">
+            <h1 className="login-title">Inicio de Sesión</h1>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Email: </label>
@@ -45,6 +45,9 @@ function Login() {
                         onChange={handleChange}
                         required
                     />
+                </div>
+                <div className="forgot-password">
+                    <a href="/forgot-password">¿Olvidaste tu contraseña?</a>
                 </div>
                 <button type="submit">Iniciar Sesión</button>
             </form> 
