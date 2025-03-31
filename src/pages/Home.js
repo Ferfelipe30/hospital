@@ -1,6 +1,6 @@
 import React from 'react';
-import ServicesGrid from '../components/Services/ServicesGrid';
-import HeroCarousel from '../components/Hero/HeroCarousel';
+import HeroCarousel from "../components/HeroCarousel";
+import ServicesGrid from "../components/ServicesGrid";
 
 const Home = () => {
   return (
