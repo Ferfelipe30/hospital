@@ -1,8 +1,10 @@
 import React from "react";
+import logo from "../assets/images/logo-de-la-clinica.webp";
 
 const Header = () => {
     return (
         <header>
+            <img src={logo} alt="Logo Salud Vida Clinica" className="logo" />
             <h1>Clinica Vida Salud</h1>
             <nav>
                 <a href="/">Home</a>

@@ -53,6 +53,9 @@ header{
   padding: 20px;
   text-align: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 header h1{
@@ -155,4 +158,40 @@ form input:focus{
 
 .forgot-password a:hover{
   text-decoration: underline;
+}
+
+.logo{
+  width: 100px;
+  height: auto;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+nav a{
+  margin: 0 10px;
+  text-decoration: none;
+  color: #333;
+}
+
+/*Estilo para el contenedor del area de EPS*/
+.eps-container{
+  margin-bottom: 20px;
+}
+
+/*Estilo para la etiqueta del area de EPS*/
+.eps-container label{
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #4A4A57; /*Verde Oscuro*/
+}
+
+/*Estilo para el select del area de EPS*/
+.eps-container select{
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #E5E5E5; /*Gris Suave*/
+  font-size: 16px;
+  background-color: #FFFFFF; /*Blanco*/
+  color: #4A4A57; /*Verde Oscuro*/
 }

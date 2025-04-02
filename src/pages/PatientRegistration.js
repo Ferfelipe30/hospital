@@ -8,9 +8,13 @@ function PatientRegistration(){
         confirmPassword: '',
         birthdate: '',
         phone: '',
+        eps: '',
         address: '',
         city: '',
     });
+
+    //Mensaje de confirmacion de registro
+    const [message, setMessage] = useState('');
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -19,9 +23,19 @@ function PatientRegistration(){
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        //Validacion basica: verificar que las contraseñas coincidan
+        if (formData.password !== formData.confirmPassword) {
+            setMessage('Error: Las contraseñas no coinciden.');
+            return;
+        }
+
+        //Simular envio de datos al backend
         console.log('Patient Data:', formData);
+        setMessage('Paciente registrado con éxito!');
         //Aqui puedes agregar la logica para enviar los datos a tu backend
         alert('Paciente registrado con éxito!');
+        //Limpiar formulario
         setFormData({
             name: '',
             email: '',
@@ -29,6 +43,7 @@ function PatientRegistration(){
             confirmPassword: '',
             birthdate: '',
             phone: '',
+            eps: '',
             address: '',
             city: '',
         });
@@ -98,6 +113,25 @@ function PatientRegistration(){
                         required
                     />
                 </div>
+                <div className="eps-container">
+                    <label>EPS: </label>
+                    <select 
+                        name="eps" 
+                        value={formData.eps} 
+                        onChange={handleChange} 
+                        required
+                    >
+                        <option value="">Seleccione una EPS</option>
+                        <option value="Sura">Sura</option>
+                        <option value="Sanitas">Sanitas</option>
+                        <option value="Coomeva">Coomeva</option>
+                        <option value="Compensar">Compensar</option>
+                        <option value="Nueva EPS">Nueva EPS</option>
+                        <option value="Famisanar">Famisanar</option>
+                        <option value="Medimás">Medimás</option>
+                        <option value="Salud Total">Salud Total</option>
+                    </select>
+                </div>
                 <div>
                     <label>Dirección:</label>
                     <input 
@@ -120,6 +154,8 @@ function PatientRegistration(){
                 </div>
                 <button type="submit">Registrar</button>
             </form>
+            {/*Mostrar mensaje de confirmacion o error */}
+            {message && <p style={{marginTop: '20px', color: message.startsWith('Error') ? 'red' : 'green' }}>{message}</p>}
         </div>
     );
 }
