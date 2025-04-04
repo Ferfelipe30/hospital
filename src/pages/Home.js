@@ -1,6 +1,6 @@
 import React from 'react';
-import ServicesGrid from '../components/Services/ServicesGrid';
-import HeroCarousel from '../components/Hero/HeroCarousel';
+import ServicesGrid from '../components/ServicesGrid';
+import HeroCarousel from '../components/HeroCarousel';
 
 const Home = () => {
   return (
@@ -8,8 +8,8 @@ const Home = () => {
       <HeroCarousel />
       <section className="py-16 container mx-auto px-6">
         <h2 className="text-3xl font-bold text-gray-800 mb-8">Nuestros Servicios Destacados</h2>
-        <ServicesGrid />
       </section>
+      <ServicesGrid />
     </main>
   );
 };

@@ -2,17 +2,18 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const {Pool} = require('pg');
+const bcrypt = require('bcrypt');
 
 const app = express();
-const port = 5000;
+const PORT = 3000;
 
 //Configuracion de la conexion a PostgreSQL
 const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
-    database: 'Clinica_salud_vida',
+    database: 'clinica_vida_salud',
     password: '1003',
-    port: 3306,
+    port: 5432,
 });
 
 //Middleware
@@ -20,7 +21,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 //Ruta para registrar pacientes
-app.post('/api/pacientes', async (req, res) => {
+app.post('/register', async (req, res) => {
     const {
         name, 
         email, 
@@ -32,17 +33,25 @@ app.post('/api/pacientes', async (req, res) => {
         city,
     } = req.body;
     try {
+        //Encriptar la contraseña
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        //Insertar los datos en la base de datos 
         const result = await pool.query(
             'INSERT INTO pacientes (name, email, password, birthdate, phone, eps, address, city) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
             [name, email, password, birthdate, phone, eps, address, city]
         );
-        res.status(201).json(result.rows[0]);
+        res.status(201).json({message: 'Paciente registrado con exito!', patientId: result.rows[0].id});
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error al registrar el paciente');
+        if (error.code === '23505') {
+            res.status(400).json({message: 'El email ya esta registrado.'});
+        } else {
+            res.status(500).json({message: 'Error al registrar el paciente.'});
+        }
     }
 });
 
-app.listen(port, () => {
-    console.log('Servidor corriendo en http://localhost:${port}');
+app.listen(PORT, () => {
+    console.log('Servidor corriendo en http://localhost:${PORT}');
 });

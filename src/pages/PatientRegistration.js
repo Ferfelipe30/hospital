@@ -21,7 +21,7 @@ function PatientRegistration(){
         setFormData({...formData, [name]: value});
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         //Validacion basica: verificar que las contraseñas coincidan
@@ -30,23 +30,36 @@ function PatientRegistration(){
             return;
         }
 
-        //Simular envio de datos al backend
-        console.log('Patient Data:', formData);
-        setMessage('Paciente registrado con éxito!');
-        //Aqui puedes agregar la logica para enviar los datos a tu backend
-        alert('Paciente registrado con éxito!');
-        //Limpiar formulario
-        setFormData({
-            name: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-            birthdate: '',
-            phone: '',
-            eps: '',
-            address: '',
-            city: '',
-        });
+        try {
+            const response = await fetch('http://localhost:5000/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                setMessage(data.message);
+                setFormData({
+                    name: '',
+                    email: '',
+                    password: '',
+                    confirmPassword: '',
+                    birthdate: '',
+                    phone: '',
+                    eps: '',
+                    address: '',
+                    city: '',
+                });
+            } else {
+                setMessage(data.message || 'Error al registrar el paciente.');
+            }
+        } catch (error) {
+            console.error(error);
+            setMessage('Error al conectar con el servidor.');
+        }
     };
 
     return (
