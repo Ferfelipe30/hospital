@@ -3,17 +3,18 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const {Pool} = require('pg');
 const bcrypt = require('bcrypt');
+require('dotenv').config();
 
 const app = express();
 const PORT = 3000;
 
 //Configuracion de la conexion a PostgreSQL
 const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'clinica_vida_salud',
-    password: '1003',
-    port: 5432,
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
 });
 
 //Middleware
@@ -38,7 +39,7 @@ app.post('/register', async (req, res) => {
 
         //Insertar los datos en la base de datos 
         const result = await pool.query(
-            'INSERT INTO pacientes (name, email, password, birthdate, phone, eps, address, city) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+            'INSERT INTO patients (name, email, password, birthdate, phone, eps, address, city) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
             [name, email, password, birthdate, phone, eps, address, city]
         );
         res.status(201).json({message: 'Paciente registrado con exito!', patientId: result.rows[0].id});

@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 function PatientRegistration(){
     const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ function PatientRegistration(){
 
     //Mensaje de confirmacion de registro
     const [message, setMessage] = useState('');
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const {name, value} = e.target;
@@ -31,7 +33,7 @@ function PatientRegistration(){
         }
 
         try {
-            const response = await fetch('http://localhost:5000/register', {
+            const response = await fetch('http://localhost:3000/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -53,6 +55,8 @@ function PatientRegistration(){
                     address: '',
                     city: '',
                 });
+                //Redirigir a la pagina de agendar citas
+                navigate('/dashboard'); // Cambia '/dashboard' por la ruta de tu pagina.
             } else {
                 setMessage(data.message || 'Error al registrar el paciente.');
             }
@@ -168,7 +172,16 @@ function PatientRegistration(){
                 <button type="submit">Registrar</button>
             </form>
             {/*Mostrar mensaje de confirmacion o error */}
-            {message && <p style={{marginTop: '20px', color: message.startsWith('Error') ? 'red' : 'green' }}>{message}</p>}
+            {message && (
+                <p
+                    style={{
+                        marginTop: '20px',
+                        color: message.startsWith('Error') ? 'red' : 'green',
+                    }}   
+                >
+                    {message}
+                </p>
+            )}
         </div>
     );
 }

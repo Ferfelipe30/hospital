@@ -7,6 +7,7 @@ import PatientRegistration from './pages/PatientRegistration';
 import Login from './pages/login';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path='/about' element={<About />} />
           <Route path='/PatientRegistration' element={<PatientRegistration />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/Dashboard' element={<Dashboard />} />
         </Routes>
       </main>
       <Footer />
