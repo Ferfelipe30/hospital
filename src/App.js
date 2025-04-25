@@ -8,6 +8,11 @@ import Login from './pages/login';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Dashboard from './pages/Dashboard';
+import AdminDoctors from './pages/doctors/adminDoctors';
+import Admin from './pages/admin/adminPanel';
+import { Buffer } from 'buffer';
+
+window.Buffer = Buffer;
 
 function App() {
   return (
@@ -20,11 +25,13 @@ function App() {
           <Route path='/PatientRegistration' element={<PatientRegistration />} />
           <Route path='/login' element={<Login />} />
           <Route path='/Dashboard' element={<Dashboard />} />
+          <Route path='/adminDoctors' element={<AdminDoctors />} />
+          <Route path='/admin' element = {<Admin />} />
         </Routes>
       </main>
       <Footer />
     </Router>
   );
-}
+};
 
 export default App;

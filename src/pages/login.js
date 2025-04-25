@@ -1,10 +1,15 @@
 import React, {useState} from "react";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
+
+    const [message, setMessage] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -13,13 +18,32 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Login Data: ', formData);
-        //Aqui puedes agregar la logica para autenticar al usuario con tu backend
-        alert("Inicio de sesion exitoso!");
-        setFormData({
-            email: '',
-            password: '',
-        });
+
+        try {
+            const response = await fetch('http://localhost:3000/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert('Inicio de sesion exitoso');
+                console.log('Usuario:', data.user);
+                //Redirigir al dashboard o guardar el estado del usuario
+                if (data.user.is_admin) {
+                    navigate('/dashboardDoctor');
+                } else {
+                    navigate('/dashboard');
+                }
+            } else {
+                setMessage(data.message);
+            }
+        } catch (error) {
+            console.error(error);
+            setMessage('Error al conectar con el servidor.');
+        }
     };
 
     return (
@@ -39,18 +63,26 @@ function Login() {
                 <div>
                     <label>Contraseña: </label>
                     <input 
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         name="password"
                         value={formData.password}
                         onChange={handleChange}
                         required
                     />
+                    <button 
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        style={{marginLeft: '10px'}}
+                    >
+                        {showPassword ? 'Ocultar': 'Mostrar'}
+                    </button>
                 </div>
                 <div className="forgot-password">
                     <a href="/forgot-password">¿Olvidaste tu contraseña?</a>
                 </div>
                 <button type="submit">Iniciar Sesión</button>
             </form> 
+            {message && <p style={{color: 'red', marginTop: '10px'}}>{message}</p>}
         </div>
     );
 }
