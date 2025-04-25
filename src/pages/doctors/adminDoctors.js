@@ -83,6 +83,33 @@ const AdminDoctors = () => {
                 <input type="time" name="end_time" placeholder="Hora de Fin" onChange={handleScheduleChange} required/>
                 <button type="submit">Agregar Horario</button>
             </form>
+
+            <form onSubmit={async (e) => {
+                e.preventDefault();
+                try {
+                    const response = await fetch('http://localhost:3000/admin/register-user', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            name: doctorData.name,
+                            email: doctorData.email,
+                            password: doctorData.password,
+                            role: 'admins',
+                        }),
+                    });
+                    const data = await response.json();
+                    alert(data.message);
+                } catch (error) {
+                    console.error(error);
+                    alert('Error al registrar el administrador.');
+                }
+            }}>
+                <h2>Registrar Administrador</h2>
+                <input type="text" name="name" placeholder="Nombre" onChange={handleDoctorChange} required/>
+                <input type="email" name="email" placeholder="Email" onChange={handleDoctorChange} required/>
+                <input type="password" name="password" placeholder="Contraseña" onChange={handleDoctorChange} required/>
+                <button type="submit">Registrar Administrador</button>
+            </form>
         </div>
     );
 };

@@ -9,6 +9,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Dashboard from './pages/Dashboard';
 import AdminDoctors from './pages/doctors/adminDoctors';
+import DashboardDoctors from './pages/doctors/dashboardDoctors';
 import Admin from './pages/admin/adminPanel';
 import { Buffer } from 'buffer';
 
@@ -26,6 +27,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/Dashboard' element={<Dashboard />} />
           <Route path='/adminDoctors' element={<AdminDoctors />} />
+          <Route path='/dashboardDoctor' element={<DashboardDoctors />}/>
           <Route path='/admin' element = {<Admin />} />
         </Routes>
       </main>

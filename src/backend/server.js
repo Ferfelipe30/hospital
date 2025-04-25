@@ -65,8 +65,14 @@ app.post('/login', async (req, res) => {
 
     try {
         //Buscar el usuario por email
-        const result = await pool.query('SELECT * FROM patients WHERE email = $1', [email]);
+        let result = await pool.query('SELECT * FROM patients WHERE email = $1', [email]);
 
+        //Si no se encuentra en pacientes, buscar en la yabla de administradores
+        if (result.rows.length === 0) {
+            result = await pool.query('SELECT * FROM admins WHERE email = $1', [email]);
+        }
+
+        //Si no se encuentra en ningua tabala, devolver error
         if (result.rows.length === 0){
             return res.status(401).json({message: 'Usuario no encontrado.'});
         }
@@ -151,7 +157,12 @@ app.post('/admin/register-user', async (req, res) => {
                 'INSERT INTO doctors (name, email, specialty, phone, address, city, password) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
                 [name, email, specialty, phone, address, city, hashedPassword]
             );
-        } else {
+        } else if (role === 'admins') {
+            await pool.query(
+                'INSERT INTO admins (name, email, password, is_admin) VALUES ($1, $2, $3, $4) RETURNING *',
+                [name, email, hashedPassword, true]
+            );
+        }else {
             return res.status(400).json({message: 'Rol no valido.'});
         }
         res.status(201).json({message: 'Usuario registrado con exito.'});
