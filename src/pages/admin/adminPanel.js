@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from "react";
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const AdminPanel = () => {
     const [patients, setPatients] = useState([]);
     const [appointments, setAppointments] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Obtener datos de pacientes.
@@ -39,6 +41,13 @@ const AdminPanel = () => {
                         </li>
                     ))}
                 </ul>
+            </section>
+
+            <section>
+                <h2>Acciones</h2>
+                <button onClick={() => navigate("/registrarDoctor")}>
+                    Registrar Doctor
+                </button>
             </section>
         </div>
     );

@@ -33,7 +33,7 @@ function Login() {
                 console.log('Usuario:', data.user);
                 //Redirigir al dashboard o guardar el estado del usuario
                 if (data.user.is_admin) {
-                    navigate('/dashboardDoctor');
+                    navigate('/admin');
                 } else {
                     navigate('/dashboard');
                 }

@@ -1,0 +1,86 @@
+import React, { useState } from "react";
+
+const registrarDoctor = () => {
+    const [doctorData, setDoctorData] = useState({
+        name: "",
+        email: "",
+        specialty: "",
+        phone: "",
+        address: "",
+        city: "",
+        password: "",
+    });
+
+    const handleDoctorChange = (e) => {
+        const { name, value } = e.target;
+        setDoctorData({ ...doctorData, [name]: value });
+    };
+
+    const handleAddDoctor = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch("http://localhost:3000/doctors", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(doctorData),
+            });
+            const data = await response.json();
+            if (response.ok) {
+                alert('Doctor registrado con exito');
+                setDoctorData({
+                    name: "",
+                    email: "",
+                    specialty: "",
+                    phone: "",
+                    address: "",
+                    city: "",
+                    password: "",
+                });
+            } else {
+                alert(data.message || 'Error al registrar el doctor');
+            }
+        } catch (error) {
+            console.error(error);
+            alert('Error al conectar con el servidor.');
+        }
+    };
+
+    return (
+        <div>
+            <h1>Regsitrar Doctor</h1>
+            <form onSubmit={handleAddDoctor}>
+                <div>
+                    <label>Nombre:</label>
+                    <input type="text" name="name" value={doctorData.name} onChange={handleDoctorChange} placeholder="Nombre" required/>
+                </div>
+                <div>
+                    <label>Email:</label>
+                    <input type="email" name="email" value={doctorData.email} onChange={handleDoctorChange} placeholder="Email" required/>
+                </div>
+                <div>
+                    <label>Especialidad:</label>
+                    <input type="text" name="specialty" value={doctorData.specialty} onChange={handleDoctorChange} placeholder="Especialidad" required/>
+                </div>
+                <div>
+                    <label>Telefono:</label>
+                    <input type="text" name="phone" value={doctorData.phone} onChange={handleDoctorChange} placeholder="Telefono" required/>
+                </div>
+                <div>
+                    <label>Dirección:</label>
+                    <input type="text" name="address" value={doctorData.address} onChange={handleDoctorChange} placeholder="Direccion" required/>
+                </div>
+                <div>
+                    <label>Ciudad:</label>
+                    <input type="text" name="city" value={doctorData.city} onChange={handleDoctorChange} placeholder="Ciudad" required/>
+                </div>
+                <div>
+                    <label>Contraseña:</label>
+                    <input type="password" name="password" value={doctorData.password} onChange={handleDoctorChange} placeholder="Contraseña" required/>
+                </div>
+                <button type="submit">Registrar Doctor</button>
+            </form>
+        </div>
+    );
+};
+
+export default registrarDoctor;
