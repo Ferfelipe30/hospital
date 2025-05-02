@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { FaUserMd, FaUsers, FaCalendarAlt, FaCog } from "react-icons/fa"; //Importar icons
+import '../../style/adminPanel.css'; // Importar estilos CSS
 
 const AdminPanel = () => {
     const [patients, setPatients] = useState([]);
@@ -20,7 +22,23 @@ const AdminPanel = () => {
     }, []);
 
     return (
-        <div>
+        <div className="admin-panel">
+            {/* Barra lateral */}
+            <aside className="sidebar">
+                <h2>Aciones</h2>
+                <button onClick={() => navigate("/registrarDoctor")}>
+                    <FaUserMd className="icon" /> Registrar Doctor
+                </button>
+                <button onClick={() => navigate()}>
+                    <FaUsers className="icon"/> Ver Pacientes
+                </button>
+                <button onClick={() => navigate()}>
+                    <FaCalendarAlt className="icon"/> Ver Citas
+                </button>
+                <button onClick={() => navigate()}>
+                    <FaCog className="icon"/> Configuración
+                </button>
+            </aside>
             <h1>Panel de Administrador</h1>
 
             <section>
