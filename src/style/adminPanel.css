@@ -1,72 +1,193 @@
-/*Estilo general del panel*/
-.admin-panel {
-    display: flex;
-    height: 100vh;
-    font-family: Arial, sans-serif;
+/* Estilos generales del cuerpo (opcional, pero bueno para consistencia) */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+  background-color: #f4f7f6; /* Un gris muy claro para el fondo general */
+  color: #333;
+  line-height: 1.6;
 }
 
-/* Barra lateral */
+.admin-panel-container {
+  display: flex;
+  min-height: 100vh;
+}
+
 .sidebar {
-    width: 250px;
-    background-color: #2c3e50;
-    color: white;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  width: 260px; /* Ancho de la barra lateral */
+  background-color: #2c3e50; /* Azul oscuro/grisáceo */
+  color: #ecf0f1; /* Texto claro */
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
 }
 
-.sidebar h2 {
-    margin-bottom: 20px;
-    font-size: 1.5rem;
-    text-align: center;
+.sidebar-header {
+  padding: 0 20px 20px 20px;
+  border-bottom: 1px solid #34495e; /* Línea separadora sutil */
+  margin-bottom: 20px;
+}
+
+.sidebar-header h2 {
+  font-size: 1.6em;
+  margin: 0;
+  color: #fff;
+  text-align: left;
 }
 
 .sidebar button {
-    background-color: #34495e;
-    color: white;
-    border: none;
-    padding: 10px;
-    text-align: left;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  background-color: transparent;
+  color: #ecf0f1;
+  border: none;
+  padding: 15px 20px;
+  margin: 5px 0; /* Margen vertical entre botones */
+  cursor: pointer;
+  text-align: left;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  width: 100%; /* Asegura que el botón ocupe todo el ancho */
 }
+
 .sidebar button:hover {
-    background-color: #1abc9c;
+  background-color: #3498db; /* Azul más brillante al pasar el mouse */
+  color: #fff;
 }
 
-.sidebar .icon {
-    font-size: 1.2rem;
+.sidebar button .icon {
+  margin-right: 12px;
+  font-size: 1.3em; /* Tamaño del icono */
+  min-width: 20px; /* Para alinear el texto si algunos botones no tienen icono */
 }
 
-/* Contenido principal */
 .main-content {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
+  flex-grow: 1; /* Ocupa el espacio restante */
+  padding: 30px 40px; /* Más padding horizontal */
+  background-color: #f8f9fa; /* Fondo ligeramente diferente para el contenido */
+  overflow-y: auto; /* Scroll si el contenido es muy largo */
 }
 
-.main-content section {
-    font-size: 2rem;
-    margin-bottom: 20px;
+.main-content h1 {
+  font-size: 2.2em;
+  color: #2c3e50; /* Mismo color que la barra lateral para consistencia */
+  margin-top: 0;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e0e0e0; /* Separador más sutil */
 }
 
-.main-content section {
-    margin-bottom: 30px;
+.content-section {
+  background-color: #fff; /* Fondo blanco para las "tarjetas" de contenido */
+  padding: 25px;
+  margin-bottom: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra más suave y moderna */
 }
 
-.main-content ul {
-    list-style: none;
-    padding: 0;
+.content-section h2 {
+  font-size: 1.7em;
+  color: #34495e; /* Tono azul/gris para los subtítulos */
+  margin-top: 0;
+  margin-bottom: 20px;
 }
 
-.main-content li {
-    background-color: #ecf0f1;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
+.data-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.data-list-item {
+  background-color: #f9f9f9; /* Fondo muy claro para cada item */
+  border: 1px solid #eee;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  font-size: 0.95em;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  justify-content: space-between; /* Para alinear contenido si es necesario */
+  align-items: center;
+}
+
+.data-list-item:hover {
+  background-color: #e9ecef; /* Un poco más oscuro al pasar el mouse */
+  transform: translateY(-2px); /* Ligero efecto de elevación */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Estilos para mensajes cuando no hay datos */
+.content-section p {
+  color: #6c757d; /* Color de texto gris para mensajes informativos */
+  font-style: italic;
+}
+
+.doctor-form-container {
+  max-width: 500px;
+  margin: 60px auto;
+  background: #fff;
+  padding: 40px 32px;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(44, 62, 80, 0.10);
+  flex-direction: column;
+  align-items: center;
+}
+
+.doctor-form-container h1 {
+  font-size: 2.2rem;
+  margin-bottom: 32px;
+}
+
+.doctor-form-container form {
+  width: 100%;
+}
+
+.doctor-form-container label {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.doctor-form-container input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1.1rem;
+}
+
+.doctor-form-container button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    font-size: 1.1rem;
+    background: #2c3e50;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+
+.doctor-form-container button[type="submit"]:hover {
+    background: #1abc9c;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 24px;
+  background: #fff;
+}
+
+.data-table th, .data-table td {
+  border: 1px solid #ccc;
+  padding: 12px;
+  text-align: left;
+}
+
+.data-table th{
+  background: #2c3e50;
+  color: #fff;
 }

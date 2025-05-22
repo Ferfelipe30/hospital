@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import AdminLayout from "../admin/AdminLayout";
 
-const registrarDoctor = () => {
+const RegistrarDoctor = () => {
     const [doctorData, setDoctorData] = useState({
         name: "",
         email: "",
@@ -46,41 +47,43 @@ const registrarDoctor = () => {
     };
 
     return (
-        <div>
-            <h1>Regsitrar Doctor</h1>
-            <form onSubmit={handleAddDoctor}>
-                <div>
-                    <label>Nombre:</label>
-                    <input type="text" name="name" value={doctorData.name} onChange={handleDoctorChange} placeholder="Nombre" required/>
-                </div>
-                <div>
-                    <label>Email:</label>
-                    <input type="email" name="email" value={doctorData.email} onChange={handleDoctorChange} placeholder="Email" required/>
-                </div>
-                <div>
-                    <label>Especialidad:</label>
-                    <input type="text" name="specialty" value={doctorData.specialty} onChange={handleDoctorChange} placeholder="Especialidad" required/>
-                </div>
-                <div>
-                    <label>Telefono:</label>
-                    <input type="text" name="phone" value={doctorData.phone} onChange={handleDoctorChange} placeholder="Telefono" required/>
-                </div>
-                <div>
-                    <label>Dirección:</label>
-                    <input type="text" name="address" value={doctorData.address} onChange={handleDoctorChange} placeholder="Direccion" required/>
-                </div>
-                <div>
-                    <label>Ciudad:</label>
-                    <input type="text" name="city" value={doctorData.city} onChange={handleDoctorChange} placeholder="Ciudad" required/>
-                </div>
-                <div>
-                    <label>Contraseña:</label>
-                    <input type="password" name="password" value={doctorData.password} onChange={handleDoctorChange} placeholder="Contraseña" required/>
-                </div>
-                <button type="submit">Registrar Doctor</button>
-            </form>
-        </div>
+        <AdminLayout>
+            <div className="doctor-form-container">
+                <h1>Registrar Doctor</h1>
+                <form onSubmit={handleAddDoctor}>
+                    <div>
+                        <label>Nombre:</label>
+                        <input type="text" name="name" value={doctorData.name} onChange={handleDoctorChange} placeholder="Nombre" required/>
+                    </div>
+                    <div>
+                        <label>Email:</label>
+                        <input type="email" name="email" value={doctorData.email} onChange={handleDoctorChange} placeholder="Email" required/>
+                    </div>
+                    <div>
+                        <label>Especialidad:</label>
+                        <input type="text" name="specialty" value={doctorData.specialty} onChange={handleDoctorChange} placeholder="Especialidad" required/>
+                    </div>
+                    <div>
+                        <label>Telefono:</label>
+                        <input type="text" name="phone" value={doctorData.phone} onChange={handleDoctorChange} placeholder="Telefono" required/>
+                    </div>
+                    <div>
+                        <label>Dirección:</label>
+                        <input type="text" name="address" value={doctorData.address} onChange={handleDoctorChange} placeholder="Direccion" required/>
+                    </div>
+                    <div>
+                        <label>Ciudad:</label>
+                        <input type="text" name="city" value={doctorData.city} onChange={handleDoctorChange} placeholder="Ciudad" required/>
+                    </div>
+                    <div>
+                        <label>Contraseña:</label>
+                        <input type="password" name="password" value={doctorData.password} onChange={handleDoctorChange} placeholder="Contraseña" required/>
+                    </div>
+                    <button type="submit">Registrar Doctor</button>
+                </form>
+            </div>
+        </AdminLayout>
     );
 };
 
-export default registrarDoctor;
+export default RegistrarDoctor;

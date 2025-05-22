@@ -206,3 +206,27 @@ app.get('/admin/appointments', async (req, res) => {
         res.status(500).json({message: 'Error al obtener las citas confirmadas.'});
     }
 });
+
+app.get('/admin/doctors', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT id, name, specialty FROM doctors');
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message: 'Error al obetener los doctores'});
+    }
+});
+
+app.get('/admin/info', async (req, res) => {
+    const { email } = req.query;
+    try {
+        const result = await pool.query('SELECT name, email FROM admins WHERE email = $1', [email]);
+        if (result.rows.length > 0) {
+            res.json(result.rows[0]);
+        } else {
+            res.status(404).json({message: 'Administrador no encontrado.'});
+        }
+    } catch (error) {
+        res.status(500).json({message: 'Error al obtener el administrador.'});
+    }
+});

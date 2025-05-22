@@ -12,6 +12,9 @@ import AdminDoctors from './pages/doctors/adminDoctors';
 import DashboardDoctors from './pages/doctors/dashboardDoctors';
 import Admin from './pages/admin/adminPanel';
 import RegistrarDoctor from './pages/doctors/registrarDoctor';
+import VerPacientes from './pages/admin/VerPacientes';
+import VerCitas from './pages/admin/VerCita';
+import Configuracion from './pages/admin/Configuracion';
 import { Buffer } from 'buffer';
 
 window.Buffer = Buffer;
@@ -31,6 +34,9 @@ function App() {
           <Route path='/dashboardDoctor' element={<DashboardDoctors />}/>
           <Route path='/admin' element = {<Admin />} />
           <Route path='/registrarDoctor' element={<RegistrarDoctor />} />
+          <Route path='/admin/ver-pacientes' element={<VerPacientes />}/>
+          <Route path='/admin/ver-citas' element={<VerCitas/>}/>
+          <Route path='/admin/configuracion' element={<Configuracion />}/>
         </Routes>
       </main>
       <Footer />
