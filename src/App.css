@@ -1,5 +1,50 @@
+/* Estilo general */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #E5E5E5; /* Gris Suave */
+  color: #4A4A57; /* Verde Oscuro */
+}
+
+/* Estilo del header */
+header {
+  background-color: #A8D5BA; /* Verde Claro */
+  color: #FFFFFF; /* Blanco */
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+header nav {
+  margin-top: 10px;
+}
+
+header nav a {
+  color: #FFFFFF; /* Blanco */
+  text-decoration: none;
+  margin: 0 15px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+header nav a:hover {
+  color: #AEDFF7; /* Azul Cielo */
+  text-decoration: underline;
+}
+
+/* Estilo para los cuadros de la app (como formulario, botones, etc.) */
 .App {
   text-align: center;
+  padding: 20px; /* Agregado para evitar que el contenido quede pegado a los bordes */
 }
 
 .App-logo {
@@ -13,21 +58,6 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -37,161 +67,177 @@
   }
 }
 
-/*Estilo general*/ 
-body{
-  font-family: Arial, Helvetica, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #E5E5E5; /*Gris Suave*/
-  color: #4A4A57; /*Verde Oscuro*/
-}
-
-/*Estilo del header*/
-header{
-  background-color: #A8D5BA; /*Verde Claro*/
-  color: #FFFFFF; /*Blanco*/
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-header h1{
-  margin: 0;
-  font-size: 2rem;
-}
-
-header nav{
-  margin-top: 10px;
-}
-
-header nav a{
-  color: #FFFFFF; /*Blanco*/
-  text-decoration: none;
-  margin: 0 15px;
-  font-size: 1rem;
-  font-weight: bold;
-}
-
-header nav a:hover{
-  color: #AEDFF7; /*Azul Cielo*/
-  text-decoration: underline;
-}
-
-/*Botones*/
-button{
-  background-color: #4A7A57;/*Verde Oscuro*/
-  color: #FFFFFF;/*Blanco*/
+/* Estilo para los botones */
+button {
+  background-color: #4A7A57; /* Verde Oscuro */
+  color: #FFFFFF; /* Blanco */
   border: none;
-  padding: 10px 20px;
-  font-size: 1rem;
+  padding: 15px 30px;
+  font-size: 1.1rem;
   cursor: pointer;
-  border-radius: 5px;
-}
-
-button:hover{
-  background-color: #A8D5BA;/*Verde Claro*/
-}
-
-/*Formularios*/
-form{
-  background-color: #FFFFFF; /*Blanco*/
-  padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #A8D5BA; /* Verde Claro */
+}
+
+/* Formularios */
+form {
+  background-color: #FFFFFF; /* Blanco */
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
   margin: 20px auto;
 }
 
-form div{
-  margin-bottom: 15px;
+form div {
+  margin-bottom: 20px;
 }
 
-form label{
+form label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   font-weight: bold;
 }
 
-form input{
+form input {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #E5E5E5; /*Gris Suave*/
-  border-radius: 5px;
+  padding: 15px;
+  border: 1px solid #E5E5E5; /* Gris Suave */
+  border-radius: 8px;
+  font-size: 1rem;
 }
 
-form input:focus{
-  border-color: #A8D5BA; /*Verde Claro*/
+form input:focus {
+  border-color: #A8D5BA; /* Verde Claro */
   outline: none;
 }
 
-/*Contenedor del login*/
-.login-container{
-  max-width: 400px;
+/* Contenedor del login */
+.login-container {
+  max-width: 450px;
   margin: 50px auto;
-  padding: 20px;
-  background-color: #FFFFFF; /*Blanco*/
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  text-align: center; /*Centrar contenido*/
+  padding: 30px;
+  background-color: #FFFFFF; /* Blanco */
+  border-radius: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center; /* Centrar contenido */
 }
 
-/*Titulo del login*/
-.login-title{
-  font-size: 2rem;
+/* Titulo del login */
+.login-title {
+  font-size: 2.5rem;
   margin-bottom: 20px;
-  color: #4A4A57; /*Verde Oscuro*/
+  color: #4A4A57; /* Verde Oscuro */
 }
 
-/*Enlace de "Olvidar contraseña"*/
-.forgot-password{
+/* Enlace de "Olvidar contraseña" */
+.forgot-password {
   margin-top: 15px;
 }
 
-.forgot-password a{
-  color: #4A4A57;/*Verde Oscuro*/
+.forgot-password a {
+  color: #4A4A57; /* Verde Oscuro */
   text-decoration: none;
   font-size: 0.9rem;
 }
 
-.forgot-password a:hover{
+.forgot-password a:hover {
   text-decoration: underline;
 }
 
-.logo{
-  width: 100px;
-  height: auto;
-  margin-right: 10px;
-  vertical-align: middle;
+/* Estilo para los cuadros de servicios (con iconos) */
+.services-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40px;
+  gap: 30px;
+  flex-wrap: wrap; /* Para que se ajusten en pantallas pequeñas */
 }
 
-nav a{
-  margin: 0 10px;
-  text-decoration: none;
-  color: #333;
+/* Estilo para cada servicio con icono */
+.service-icon {
+  text-align: center;
+  padding: 30px;
+  border: 2px solid #ddd;
+  border-radius: 15px;
+  background-color: #FFFFFF;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px; /* Asegura un espacio abajo en servicios */
 }
 
-/*Estilo para el contenedor del area de EPS*/
-.eps-container{
-  margin-bottom: 20px;
+.service-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-/*Estilo para la etiqueta del area de EPS*/
-.eps-container label{
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-  color: #4A4A57; /*Verde Oscuro*/
+.service-icon svg {
+  color: #4A7A57;
+  font-size: 3.5rem; /* Tamaño consistente para todos los iconos */
+  transition: color 0.3s ease;
 }
 
-/*Estilo para el select del area de EPS*/
-.eps-container select{
+.service-icon svg:hover {
+  color: #AEDFF7; /* Azul Cielo */
+}
+
+.service-icon h3 {
+  margin-top: 10px;
+  font-size: 1.3rem;
+  color: #4A4A57;
+}
+
+/* Estilo para el cuadro de información desplegado */
+.service-details {
+  display: none;
+  margin-top: 20px;
+  text-align: center;
+  padding: 40px; /* Aumenté el padding para hacerlo más grande */
+  background-color: #F1F8F4; /* Fondo de color suave */
+  border: 2px solid #ddd;
+  border-radius: 15px;
+  width: 80%;
+  max-width: 700px; /* Aumenté el ancho máximo */
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.service-details img {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #E5E5E5; /*Gris Suave*/
-  font-size: 16px;
-  background-color: #FFFFFF; /*Blanco*/
-  color: #4A4A57; /*Verde Oscuro*/
+  height: auto;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.service-details p {
+  font-size: 1.2rem;
+  color: #4A4A57;
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+/* Cuando el cuadro se despliega */
+.service-details.active {
+  display: block;
+  transform: scale(1.05);
+}
+
+/* Estilo para las imágenes de fondo en el cuadro de información */
+.service-details img {
+  border-radius: 8px;
+  max-height: 400px;
+  object-fit: cover;
 }
