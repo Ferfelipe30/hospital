@@ -1,5 +1,7 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import { supabase } from '../utils/supabase';
+import bcrypt from "bcryptjs";
 
 function PatientRegistration(){
     const [formData, setFormData] = useState({
@@ -33,17 +35,27 @@ function PatientRegistration(){
         }
 
         try {
-            const response = await fetch('http://localhost:3000/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
+            const hashedPassword = await bcrypt.hash(formData.password, 10);
 
-            const data = await response.json();
-            if (response.ok) {
-                setMessage(data.message);
+            const {data, error} = await supabase.from('patients').insert([{
+                name: formData.name,
+                email: formData.email,
+                password: hashedPassword,
+                birthdate: formData.birthdate,
+                phone: formData.phone,
+                eps: formData.eps,
+                address: formData.address,
+                city: formData.city,
+            }]);
+
+            if (error) {
+                if (error.code === '23505') {
+                    setMessage('El email ya esta registrado.');
+                } else {
+                    setMessage('Error al registrar el paciente.');
+                }
+            } else {
+                setMessage('Paciente registrado con exito!');
                 setFormData({
                     name: '',
                     email: '',
@@ -55,10 +67,7 @@ function PatientRegistration(){
                     address: '',
                     city: '',
                 });
-                //Redirigir a la pagina de agendar citas
-                navigate('/dashboard'); // Cambia '/dashboard' por la ruta de tu pagina.
-            } else {
-                setMessage(data.message || 'Error al registrar el paciente.');
+                navigate('/dashboard');
             }
         } catch (error) {
             console.error(error);

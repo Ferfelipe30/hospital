@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import AdminLayout from "../admin/AdminLayout";
+import { supabase } from "../../utils/supabase";
+import bcrypt from "bcryptjs";
 
 const RegistrarDoctor = () => {
     const [doctorData, setDoctorData] = useState({
@@ -20,14 +22,14 @@ const RegistrarDoctor = () => {
     const handleAddDoctor = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:3000/doctors", {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(doctorData),
-            });
-            const data = await response.json();
-            if (response.ok) {
-                alert('Doctor registrado con exito');
+            const hashedPassword = await bcrypt.hash(doctorData.password, 10);
+            const doctorToInsert = { ...doctorData, password: hashedPassword };
+
+            const { data, error } = await supabase.from('doctors').insert([doctorToInsert]);
+            if (error) {
+                alert(error.message || 'Error al registrar el doctor.');
+            } else {
+                alert('Doctor Registrado con exito.');
                 setDoctorData({
                     name: "",
                     email: "",
@@ -37,12 +39,10 @@ const RegistrarDoctor = () => {
                     city: "",
                     password: "",
                 });
-            } else {
-                alert(data.message || 'Error al registrar el doctor');
             }
         } catch (error) {
             console.error(error);
-            alert('Error al conectar con el servidor.');
+            alert('Error al conectar con Supabase.');
         }
     };
 

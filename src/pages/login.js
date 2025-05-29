@@ -34,6 +34,8 @@ function Login() {
                 //Redirigir al dashboard o guardar el estado del usuario
                 if (data.user.is_admin) {
                     navigate('/admin');
+                } else if (data.user.role === 'doctor' || data.user.is_doctor){
+                    navigate('/dashboardDoctor');
                 } else {
                     navigate('/dashboard');
                 }
