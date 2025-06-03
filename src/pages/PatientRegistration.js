@@ -56,8 +56,7 @@ function PatientRegistration(){
                 return;
             }
 
-            // Step 2: Insert patient details into the 'patients' table
-            const { data: patientData, error: patientError } = await supabase.from('patients').insert([{
+            const { error: patientError } = await supabase.from('patients').insert([{
                 name: formData.name,
                 email: formData.email,
                 birthdate: formData.birthdate,

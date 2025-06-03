@@ -16,25 +16,11 @@ import VerPacientes from './pages/admin/VerPacientes';
 import VerCitas from './pages/admin/VerCita';
 import Configuracion from './pages/admin/Configuracion';
 import { Buffer } from 'buffer';
-import { supabase } from '../src/utils/supabase';
 import RegisterAdmin from './pages/admin/RegisterAdmin';
 
 window.Buffer = Buffer;
 
 function App() {
-  const [patients, setpatients] = useState([])
-
-  useEffect(() => {
-    async function getpatients() {
-      const {data: patients} = await supabase.from('patients').select()
-      if (patients.length > 1) {
-        setpatients(patients)
-      }
-    }
-
-    getpatients()
-  }, [])
-
   return (
     <Router>
       <Header />

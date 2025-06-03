@@ -1,27 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 const DashboardDoctors = () => {
-    const [doctor, setDoctor] = useState(null);
-    const [appointments, setAppointments] = useState([]);
-    const [patients, setPatients] = useState([]);
-
-    const doctorEmail = localStorage.getItem('doctorEmail');
-
-    useEffect(() => {
-        if (doctorEmail) {
-            fetch('http://localhost:3000/doctors/info?email=${doctorEmail}')
-                .then(res => res.json())
-                .then(data => setDoctor(data));
-        }
-        fetch('http://localhost:3000/doctors/appointments?email=${doctorEmail}')
-            .then(res => res.json())
-            .then(data => setAppointments(data));
-        
-        fetch('http://localhost:3000/doctors/patients?email=${doctorEmail}')
-            .then(res => res.json())
-            .then(data => setPatients(data));
-    }, [doctorEmail]);
-
     return (
         <div className="doctor-dashboard-container" style={{padding: '32px'}}>
             <h1>Dashboard de Doctores</h1>
