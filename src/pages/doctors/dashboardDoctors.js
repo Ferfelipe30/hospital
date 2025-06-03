@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { supabase } from "../../utils/supabase";
 
 const DashboardDoctors = () => {
     const [doctor, setDoctor] = useState(null);
@@ -8,20 +9,30 @@ const DashboardDoctors = () => {
     const doctorEmail = localStorage.getItem('doctorEmail');
 
     useEffect(() => {
-        if (doctorEmail) {
-            fetch('http://localhost:3000/doctors/info?email=${doctorEmail}')
-                .then(res => res.json())
-                .then(data => setDoctor(data));
-                
-            fetch('http://localhost:3000/doctors/appointments?email=${doctorEmail}')
-                .then(res => res.json())
-                .then(data => setAppointments(data));
-        
-            fetch('http://localhost:3000/doctors/patients?email=${doctorEmail}')
-                .then(res => res.json())
-                .then(data => setPatients(data));
-        }
-        
+        const fetchData = async () => {
+            if (doctorEmail) {
+                const { data: doctorData } = await supabase
+                    .from('doctors')
+                    .select('*')
+                    .eq('email', doctorEmail)
+                    .single();
+                setDoctor(doctorData);
+
+                const { data: appointmentsData } = await supabase
+                    .from('appointments')
+                    .select('*')
+                    .eq('doctor_email', doctorEmail);
+                setAppointments(appointmentsData || []);
+
+                const { data: patientsData } = await supabase
+                    .from('patients')
+                    .select('*')
+                    .eq('doctor_email', doctorEmail);
+                setPatients(patientsData || []);
+            }
+        };
+
+        fetchData();
     }, [doctorEmail]);
 
     return (
