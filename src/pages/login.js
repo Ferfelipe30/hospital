@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../utils/supabase";
 
 function Login() {
     const [formData, setFormData] = useState({
@@ -20,27 +21,33 @@ function Login() {
         e.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:3000/login', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(formData),
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: formData.email,
+                password: formData.password,
             });
 
-            const data = await response.json();
-
-            if (response.ok) {
-                alert('Inicio de sesion exitoso');
-                console.log('Usuario:', data.user);
-                //Redirigir al dashboard o guardar el estado del usuario
-                if (data.user.is_admin) {
+            if (error) {
+                // Provide more user-friendly messages for common auth errors
+                if (error.message.includes('Invalid login credentials')) {
+                    setMessage('Credenciales inválidas. Por favor, verifica tu email y contraseña.'); // Handles incorrect email/password
+                } else if (error.message.includes('Email not confirmed')) {
+                    // Handles the specific "Email not confirmed" error
+                    setMessage('Tu correo electrónico aún no ha sido confirmado. Por favor, revisa tu bandeja de entrada y haz clic en el enlace de confirmación.');
+                } else {
+                    setMessage(`Error al iniciar sesión: ${error.message}`);
+                }
+            } else if (data.user) {
+                const user = data.user;
+                // Check user metadata for roles and navigate accordingly
+                const meta = user.user_metadata || {};
+                if (meta.role === 'admin' || meta.is_admin) {
                     navigate('/admin');
-                } else if (data.user.role === 'doctor' || data.user.is_doctor){
+                } else if (meta.role === 'doctor' || meta.is_doctor) {
                     navigate('/dashboardDoctor');
                 } else {
                     navigate('/dashboard');
+                    // Optionally set a success message state here if you want to show it briefly before redirect
                 }
-            } else {
-                setMessage(data.message);
             }
         } catch (error) {
             console.error(error);

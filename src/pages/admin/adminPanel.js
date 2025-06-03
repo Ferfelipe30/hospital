@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { FaUserMd, FaUsers, FaCalendarAlt, FaCog } from "react-icons/fa"; //Importar icons
 import '../../style/adminPanel.css'; // Importar estilos CSS
+import { supabase } from "../../utils/supabase";
 
 const AdminPanel = () => {
     const [patients, setPatients] = useState([]);
@@ -12,42 +13,41 @@ const AdminPanel = () => {
 
     useEffect(() => {
         // Obtener datos de pacientes.
-        axios.get('http://localhost:3000/admin/pacients')
-            .then((res) => setPatients(res.data))
-            .catch((error) => console.error('Error al obtener pacientes: ', error));
+        const fetchPatients = async () => {
+            const { data, error } = await supabase
+                .from('patients')
+                .select('*')
+                .order('created_at', { ascending: false});
+            
+            if (error) {
+                console.error('Error al obtener pacientes:', error);
+                setPatients([]);
+            } else {
+                setPatients(data || []);
+            }
+        };
+
+        //Obtener doctores desde Supabase
+        const fetchDoctors = async () => {
+            const { data, error } = await supabase
+                .from('doctors')
+                .select('*')
+                .order('created_at', { ascending: false });
+            if (error) {
+                console.error('Error al obtener doctores:', error);
+                setDoctors([]);
+            } else {
+                setDoctors(data || []);
+            }
+        };
+
+        fetchPatients();
+        fetchDoctors();
 
         // Obtener citas confirmadas.
         axios.get('http://localhost:3000/admin/appointments')
             .then((res) => setAppointments(res.data))
             .catch((error) => console.error('Error al obtener citas: ', error));
-
-        // Obtener datos de doctores.
-        axios.get('http://localhost:3000/admin/doctors')
-            .then((res) => {
-                console.log('Respuesta completa de /doctors:', res); // Para ver toda la respuesta
-                console.log('Datos de doctores (res.data):', res.data); // Para ver específicamente res.data
-                if (Array.isArray(res.data)) {
-                    setDoctors(res.data);
-                } else {
-                    console.error('Error: La respuesta de /doctors no es un array. Recibido:', res.data);
-                    setDoctors([]); // Asegurar que doctors sea un array para evitar errores de renderizado
-                }
-            })
-            .catch((error) => {
-                console.error('Error detallado al obtener doctores:', error);
-                if (error.response) {
-                    // El servidor respondió con un estado fuera del rango 2xx
-                    console.error('Error - Respuesta del servidor (data):', error.response.data);
-                    console.error('Error - Respuesta del servidor (status):', error.response.status);
-                } else if (error.request) {
-                    // La solicitud se hizo pero no se recibió respuesta
-                    console.error('Error - No se recibió respuesta del servidor:', error.request);
-                } else {
-                    // Algo más causó el error
-                    console.error('Error - Mensaje:', error.message);
-                }
-                setDoctors([]); // Limpiar doctores en caso de error
-            });
     }, []);
 
     return (
@@ -82,8 +82,10 @@ const AdminPanel = () => {
                     <h2>Pacientes Registrados</h2>
                     {patients.length > 0 ? (
                         <ul className="data-list">
-                            {patients.map((patient) => (
-                                <li key={patient.id} className="data-list-item">{patient.name} - {patient.email}</li>
+                            {patients.slice(0, 5).map((patients) => (
+                                <li key={patients.id} className="data-list-item">
+                                    {patients.name} - {patients.email}
+                                </li>
                             ))}
                         </ul>
                     ) : <p>No hay pacientes registrados.</p>}

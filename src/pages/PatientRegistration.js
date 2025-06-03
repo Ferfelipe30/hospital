@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import { supabase } from '../utils/supabase';
-import bcrypt from "bcryptjs";
 
 function PatientRegistration(){
     const [formData, setFormData] = useState({
@@ -35,27 +34,51 @@ function PatientRegistration(){
         }
 
         try {
-            const hashedPassword = await bcrypt.hash(formData.password, 10);
+            // Step 1: Authenticate and create the user in Supabase Auth
+            const { data: authData, error: authError } = await supabase.auth.signUp({
+                email: formData.email,
+                password: formData.password,
+            });
 
-            const {data, error} = await supabase.from('patients').insert([{
+            if (authError) {
+                if (authError.message.includes('User already registered')) {
+                    setMessage('Este correo electrónico ya está registrado. Por favor, intente iniciar sesión o utilice otro correo.');
+                } else {
+                    setMessage(`Error al registrar el usuario: ${authError.message}`);
+                }
+                return;
+            }
+
+            // Ensure user object is available from authentication response
+            if (!authData || !authData.user) {
+                setMessage('Error: No se pudo completar el registro. No se obtuvo la información del usuario después de la autenticación.');
+                console.error('Supabase signUp did not return user data despite no authError:', authData);
+                return;
+            }
+
+            // Step 2: Insert patient details into the 'patients' table
+            const { data: patientData, error: patientError } = await supabase.from('patients').insert([{
                 name: formData.name,
                 email: formData.email,
-                password: hashedPassword,
                 birthdate: formData.birthdate,
                 phone: formData.phone,
                 eps: formData.eps,
                 address: formData.address,
                 city: formData.city,
+                user_id: authData.user.id, // authData.user is confirmed to exist here
             }]);
 
-            if (error) {
-                if (error.code === '23505') {
-                    setMessage('El email ya esta registrado.');
+            if (patientError) {
+                console.error('Error inserting patient data:', patientError);
+                // At this point, an auth user exists, but patient profile creation failed.
+                // This is a partial registration state.
+                if (patientError.code === '23505') { // Unique constraint violation
+                    setMessage('Error al guardar el perfil del paciente: Ya existe un registro con esta información (ej. email o ID de usuario). Por favor, contacte a soporte si el problema persiste.');
                 } else {
-                    setMessage('Error al registrar el paciente.');
+                    setMessage(`Error al guardar los datos del paciente: ${patientError.message}. Su cuenta de usuario pudo haber sido creada. Por favor, intente iniciar sesión o contacte a soporte.`);
                 }
             } else {
-                setMessage('Paciente registrado con exito!');
+                setMessage('¡Paciente registrado con éxito!');
                 setFormData({
                     name: '',
                     email: '',

@@ -55,11 +55,6 @@ function App() {
           <Route path='/admin/register' element={<RegisterAdmin/>} />
         </Routes>
       </main>
-      <div>
-        {patients.map((todo) => (
-          <li key={todo}>{todo}</li>
-        ))}
-      </div>
       <Footer />
     </Router>
   );

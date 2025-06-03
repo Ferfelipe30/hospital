@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import AdminLayout from "../admin/AdminLayout";
 import { supabase } from "../../utils/supabase";
-import bcrypt from "bcryptjs";
 
 const RegistrarDoctor = () => {
     const [doctorData, setDoctorData] = useState({
@@ -22,12 +21,40 @@ const RegistrarDoctor = () => {
     const handleAddDoctor = async (e) => {
         e.preventDefault();
         try {
-            const hashedPassword = await bcrypt.hash(doctorData.password, 10);
-            const doctorToInsert = { ...doctorData, password: hashedPassword };
+            const { data: authData, error: authError} = await supabase.auth.signUp({
+                email: doctorData.email,
+                password: doctorData.password,
+                options:{
+                    data:{
+                        role: "doctor",
+                        name: doctorData.name,
+                        specialty: doctorData.specialty,
+                    }
+                }
+            });
 
-            const { data, error } = await supabase.from('doctors').insert([doctorToInsert]);
-            if (error) {
-                alert(error.message || 'Error al registrar el doctor.');
+            if (authError) {
+                alert(authError.message || "Error al registrar el usuario.");
+                return;
+            }
+
+            if (!authData || !authData.user) {
+                alert("No se puede obtener el usuario despues del registro.");
+                return;
+            }
+
+            const { error: doctorError } = await supabase.from('doctors').insert([{
+                user_id: authData.user_id,
+                name: doctorData.name,
+                email: doctorData.email,
+                specialty: doctorData.specialty,
+                phone: doctorData.phone,
+                address: doctorData.address,
+                city: doctorData.city
+            }]);
+
+            if (doctorError) {
+                alert(doctorError.message || 'Error al guardar los datos del doctor.');
             } else {
                 alert('Doctor Registrado con exito.');
                 setDoctorData({
