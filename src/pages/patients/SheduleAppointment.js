@@ -16,7 +16,7 @@ const SheduleAppointment = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const { data, error } = await supabase
+        const { error } = await supabase
             .from('citas_medicas')
             .insert([form]);
         if (error) {
