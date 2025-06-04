@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../style/Dashboard.css';
 
 const Dashboard = () => {
@@ -6,9 +7,9 @@ const Dashboard = () => {
         <div className='dashboard-container'>
             <h1 className='dashboard-title'>Bienvenido al Dashboard</h1>
             <ul className='dashboard-menu'>
-                <li><a href='/shedule-appointment'>Agendar Citas</a></li>
-                <li><a href='/view-exams'>Ver Examenes</a></li>
-                <li><a href='/profile'>Perfil</a></li>
+                <li><Link to='/shedule-appointment'>Agendar Citas</Link></li>
+                <li><Link to='/view-exams'>Ver Examenes</Link></li>
+                <li><Link to='/profile'>Perfil</Link></li>
             </ul>
         </div>
     );
