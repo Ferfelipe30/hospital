@@ -39,7 +39,7 @@ function App() {
           <Route path='/admin/ver-citas' element={<VerCitas/>}/>
           <Route path='/admin/configuracion' element={<Configuracion />}/>
           <Route path='/admin/register' element={<RegisterAdmin/>} />
-          <Route path='/shedule-appointment' element={<SheduleAppointment />}/>
+          <Route path='/shedule-appointment' element={<SheduleAppointment/>}/>
         </Routes>
       </main>
       <Footer />
