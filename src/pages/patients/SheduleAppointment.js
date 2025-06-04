@@ -39,7 +39,7 @@ const SheduleAppointment = () => {
                 motivo: form.motivo
             }]);
         if (error) {
-            setMensaje('Error al registrar la cita: ${error.message}');
+            setMensaje(`Error al registrar la cita: ${error.message}`);
         } else {
             setMensaje('Cita registrada correctamente');
             setForm({ nombre: '', user_id: form.user_id, fecha: '', hora: '', motivo: ''});
