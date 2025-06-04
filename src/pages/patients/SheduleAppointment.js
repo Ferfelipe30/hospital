@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../utils/supabase';
-import { useNavigate } from 'react-router-dom';
 
 const SheduleAppointment = () => {
     const [form, setForm] = useState({
@@ -15,8 +14,6 @@ const SheduleAppointment = () => {
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
-
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUser = async () => {
