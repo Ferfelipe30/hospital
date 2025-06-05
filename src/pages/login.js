@@ -9,7 +9,7 @@ function Login() {
     });
 
     const [message, setMessage] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -56,42 +56,44 @@ function Login() {
     };
 
     return (
-        <div className="login-container">
-            <h1 className="login-title">Inicio de Sesión</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Email: </label>
-                    <input 
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                    />
+        <div className="login-bg">
+            <div className="login-card">
+                <h1 className="login-title">Login to Your Account</h1>
+                <form onSubmit={handleSubmit}>
+                    <div className="login-label-group">
+                        <label>Username or Email</label>
+                        <input 
+                            type="email"
+                            name="email"
+                            placeholder="Enter your username or email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="login-label-group">
+                        <label>Password</label>
+                        <input 
+                            type={showPassword ? 'text' : 'password'}
+                            name="password"
+                            placeholder="Enter your password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div style={{textAlign: "left", marginBottom: "18px"}}>
+                        <a className="login-link" href="/forgot-password">Forgot Password?</a>
+                    </div>
+                    <button className="login-btn" type="submit">Login</button>
+                </form>
+                <div style={{textAlign: "center", marginTop: "18px"}}>
+                    <span style={{fontSize: "1rem", color: "#555"}}>
+                        Don't have an account? <a className="login-link" href="/PatientRegistration">Register</a>
+                    </span>
                 </div>
-                <div>
-                    <label>Contraseña: </label>
-                    <input 
-                        type={showPassword ? 'text' : 'password'}
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                    />
-                    <button 
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        style={{marginLeft: '10px'}}
-                    >
-                        {showPassword ? 'Ocultar': 'Mostrar'}
-                    </button>
-                </div>
-                <div className="forgot-password">
-                    <a href="/forgot-password">¿Olvidaste tu contraseña?</a>
-                </div>
-                <button type="submit">Iniciar Sesión</button>
-            </form> 
-            {message && <p style={{color: 'red', marginTop: '10px'}}>{message}</p>}
+                {message && <p style={{color: 'red', marginTop: '10px'}}>{message}</p>}
+            </div>
         </div>
     );
 }

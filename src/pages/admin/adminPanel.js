@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { FaUserMd, FaUsers, FaCalendarAlt, FaCog } from "react-icons/fa"; //Importar icons
 import '../../style/adminPanel.css'; // Importar estilos CSS
@@ -7,7 +6,7 @@ import { supabase } from "../../utils/supabase";
 
 const AdminPanel = () => {
     const [patients, setPatients] = useState([]);
-    const [appointments, setAppointments] = useState([]);
+    const [citas_medicas, setcitas_medicas] = useState([]);
     const [doctors, setDoctors] = useState([]); // Nuevo estado para doctores
     const navigate = useNavigate();
 
@@ -17,7 +16,7 @@ const AdminPanel = () => {
             const { data, error } = await supabase
                 .from('patients')
                 .select('*')
-                .order('created_at', { ascending: false});
+                .order('id', { ascending: false});
             
             if (error) {
                 console.error('Error al obtener pacientes:', error);
@@ -32,7 +31,7 @@ const AdminPanel = () => {
             const { data, error } = await supabase
                 .from('doctors')
                 .select('*')
-                .order('created_at', { ascending: false });
+                .order('id', { ascending: false });
             if (error) {
                 console.error('Error al obtener doctores:', error);
                 setDoctors([]);
@@ -41,13 +40,23 @@ const AdminPanel = () => {
             }
         };
 
+        //Obtener citas desde Supabase
+        const fetchAppointments = async () => {
+            const { data, error } = await supabase
+                .from('citas_medicas')
+                .select('*')
+                .order('id', { ascending: false });
+            if (error) {
+                console.error('Error al obtener citas:', error);
+                setcitas_medicas([]);
+            } else {
+                setcitas_medicas(data || []);
+            }
+        }
+
         fetchPatients();
         fetchDoctors();
-
-        // Obtener citas confirmadas.
-        axios.get('http://localhost:3000/admin/appointments')
-            .then((res) => setAppointments(res.data))
-            .catch((error) => console.error('Error al obtener citas: ', error));
+        fetchAppointments();
     }, []);
 
     return (
@@ -82,9 +91,9 @@ const AdminPanel = () => {
                     <h2>Pacientes Registrados</h2>
                     {patients.length > 0 ? (
                         <ul className="data-list">
-                            {patients.slice(0, 5).map((patients) => (
-                                <li key={patients.id} className="data-list-item">
-                                    {patients.name} - {patients.email}
+                            {patients.slice(0, 5).map((patient) => (
+                                <li key={patient.id} className="data-list-item">
+                                    {patient.name} - {patient.email} - {patient.phone || 'Teléfono no disponible'}
                                 </li>
                             ))}
                         </ul>
@@ -92,12 +101,12 @@ const AdminPanel = () => {
                 </section>
 
                 <section className="content-section">
-                    <h2>Citas Confirmadas</h2>
-                    {appointments.length > 0 ? (
+                    <h2>Citas Agendadas</h2>
+                    {citas_medicas.length > 0 ? (
                         <ul className="data-list">
-                            {appointments.map((appointment) => (
-                                <li key={appointment.id} className="data-list-item">
-                                    {appointment.date} - {appointment.patients_name} con Dr. {appointment.doctors_name}
+                            {citas_medicas.map((cita) => (
+                                <li key={cita.id} className="data-list-item">
+                                    {cita.date} - Paciente: {cita.patients_name || cita.patient_name || cita.patient_id} con Dr. {cita.doctors_name || cita.doctor_name || cita.doctor_id}
                                 </li>
                             ))}
                         </ul>

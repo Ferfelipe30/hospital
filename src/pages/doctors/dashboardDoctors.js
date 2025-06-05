@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../utils/supabase";
+import "../../style/dashboardDoctor.css";
 
 const DashboardDoctors = () => {
     const [doctor, setDoctor] = useState(null);
     const [appointments, setAppointments] = useState([]);
-    const [patients, setPatients] = useState([]);
+    const [selectedDate, setSelectedDate] = useState(new Date());
 
     const doctorEmail = localStorage.getItem('doctorEmail');
 
@@ -18,73 +19,128 @@ const DashboardDoctors = () => {
                     .single();
                 setDoctor(doctorData);
 
+                const dateStr = selectedDate.toISOString().split('T')[0];
                 const { data: appointmentsData } = await supabase
                     .from('appointments')
                     .select('*')
-                    .eq('doctor_email', doctorEmail);
+                    .eq('doctor_email', doctorEmail)
+                    .eq('date', dateStr)
+                    .order('time', { ascending: true });
                 setAppointments(appointmentsData || []);
-
-                const { data: patientsData } = await supabase
-                    .from('patients')
-                    .select('*')
-                    .eq('doctor_email', doctorEmail);
-                setPatients(patientsData || []);
             }
         };
 
         fetchData();
-    }, [doctorEmail]);
+    }, [doctorEmail, selectedDate]);
+
+    const today = new Date();
+    const [calendarMonth, setCalendarMonth] = useState(today.getMonth());
+    const [calendarYear, setCalendarYear] = useState(today.getFullYear());
+
+    useEffect(() => {
+        setCalendarMonth(selectedDate.getMonth());
+        setCalendarYear(selectedDate.getFullYear());
+    }, [selectedDate]);
+
+    const getDaysInMonth = (month, year) => new Date(year, month + 1, 0).getDate();
+
+    const renderCalendar = () => {
+        const days = [];
+        const daysInMonth = getDaysInMonth(calendarMonth, calendarYear);
+        const firstDay = new Date(calendarYear, calendarMonth, 1). getDay();
+        for (let i = 0; i < firstDay; i++) days.push(<div key={`empty-${i}`}></div>);
+        for (let d = 1; d <= daysInMonth; d++) {
+            const dateObj = new Date(calendarYear, calendarMonth, d);
+            const isSelected = selectedDate.toDateString() === dateObj.toDateString();
+            days.push(
+                <button
+                    key={d}
+                    className={`calendar-day${isSelected ? ' selected' : ''}`}
+                    onClick={() => setSelectedDate(dateObj)}
+                >
+                    {d}
+                </button>
+            );
+        }
+        return days;
+    };
 
     return (
-        <div className="doctor-dashboard-container" style={{padding: '32px'}}>
-            <h1>Dashboard de Doctores</h1>
-            {doctor && (
-                <div style={{marginBottom: "24px"}}>
-                    <h2>Bienvenido, Dr. {doctor.name}</h2>
-                    <p>Especialidad: {doctor.specialty}</p>
+        <div className="doctor-dashboard-container">
+            <aside className="doctor-sidebar">
+                <div className="sidebar-profile">
+                    <img
+                        src="https://randomuser.me/api/portraits/women/44.jpg"
+                        alt="Perfil"
+                        className="sidebar-avatar"
+                    />
+                    <span className="sidebar-name">{doctor?.name || "Doctor/a"}</span>
+                    <span className="sidebar-specialty">{doctor?.specialty || ""}</span>
                 </div>
-            )}
-
-            <section style={{marginBottom: "32px"}}>
-                <h3>Citas Agendadas</h3>
-                {appointments.length > 0 ? (
-                    <table className="data-table">
+                <nav>
+                    <ul>
+                        <li className="active">Dashboard</li>
+                        <li><a href="/patients">Patients</a></li>
+                        <li><a href="/appointments">Appointments</a></li>
+                        <li><a href="/messages">Messages</a></li>
+                        <li><a href="/settings">Settings</a></li>
+                    </ul>
+                </nav>
+            </aside>
+            <main className="doctor-dashboard-main">
+                <h1>Dashboard</h1>
+                <p className="welcome-msg">
+                    {doctor && <>Welcome back, Dr. {doctor.name}. Here's your overview for today.</>}
+                </p>
+                <h2>Today's Appointments</h2>
+                <div className="doctor-calendar-section">
+                    <div className="calendar-header">
+                        <button onClick={() => setCalendarMonth(m => m - 1)}>&lt;</button>
+                        <strong>
+                            {new Date(calendarYear, calendarMonth).toLocaleString('default', { month: 'long', year: 'numeric' })}
+                        </strong>
+                        <button onClick={() => setCalendarMonth(m => m + 1)}>&gt;</button>
+                    </div>
+                    <div className="calendar-grid">
+                        <div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>
+                        {renderCalendar()}
+                    </div>
+                </div>
+                <div className="appointments-table-section">
+                    <table className="appointments-table">
                         <thead>
                             <tr>
-                                <th>Paciente</th>
-                                <th>Fecha</th>
-                                <th>Hora</th>
-                                <th>Motivo</th>
+                                <th>Time</th>
+                                <th>Patient</th>
+                                <th>Type</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {appointments.map((cita) => (
+                            {appointments.length > 0 ? appointments.map((cita) => (
                                 <tr key={cita.id}>
-                                    <td>{cita.patients_name}</td>
-                                    <td>{cita.date}</td>
-                                    <td>{cita.time || cita.hour || cita.start_time}</td>
-                                    <td>{cita.reason}</td>
+                                    <td>{cita.time}</td>
+                                    <td>{cita.patient_name}</td>
+                                    <td>{cita.type}</td>
+                                    <td>
+                                        <span className={`status-badge ${cita.status?.toLowerCase()}`}>
+                                            {cita.status}
+                                        </span>
+                                    </td>
                                 </tr>
-                            ))}
+                            )) : (
+                                <tr>
+                                    <td colSpan={4} style={{ textAlign: "center" }}>No appointments for this day.</td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
-                ) : (
-                    <p>No tiene citas agendadas</p>
-                )}
-            </section>
-
-            <section>
-                <h3>Pacientes Asignados</h3>
-                {patients.length > 0 ? (
-                    <ul>
-                        {patients.map((p) => (
-                            <li key={p.id}>{p.name} - {p.email}</li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>No tienes pacientes asignados.</p>
-                )}
-            </section>
+                </div>
+                <div className="quick-actions">
+                    <button className="btn-primary">View Patient Records</button>
+                    <button className="btn-secondary">Schedule New Appointment</button>
+                </div>
+            </main>
         </div>
     );
 };

@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
+const supabase = require('../src/utils/supabase');
 
 const app = express();
 app.use(express.json());
@@ -53,6 +54,36 @@ app.post('/login', async (req, res) => {
             is_doctor: user.is_doctor
         }
     });
+});
+
+app.get('/patients', async (req, res) => {
+    const { data, error } = await supabase
+        .from('patients')
+        .select('*');
+    if (error) {
+        return res.status(500).json({ message: 'Error al obtener pacientes', error });
+    }
+    res.json(data);
+});
+
+app.get('/doctors', async (req, res) => {
+    const { data, error } = await supabase
+        .from('doctors')
+        .select('*');
+    if (error) {
+        return res.status(500).json({ message: 'Error al obtener doctores', error });
+    }
+    res.json(data);
+});
+
+app.get('/citas_medicas', async (req, res) => {
+    const { data, error } = await supabase
+        .from('citas_medicas')
+        .select('*');
+    if (error) {
+        return res.status(500).json({ message: 'Error al obtener citas', error });
+    }
+    res.json(data);
 });
 
 app.listen(4000, () => {
