@@ -47,7 +47,7 @@ const DashboardDoctors = () => {
     const renderCalendar = () => {
         const days = [];
         const daysInMonth = getDaysInMonth(calendarMonth, calendarYear);
-        const firstDay = new Date(calendarYear, calendarMonth, 1). getDay();
+        const firstDay = new Date(calendarYear, calendarMonth, 1);
         for (let i = 0; i < firstDay; i++) days.push(<div key={`empty-${i}`}></div>);
         for (let d = 1; d <= daysInMonth; d++) {
             const dateObj = new Date(calendarYear, calendarMonth, d);
